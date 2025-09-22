@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "927239353449",
+    "project_id": "tibicledemo",
+    "storage_bucket": "tibicledemo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927239353449:android:813bc124c3c670a969def8",
+        "android_client_info": {
+          "package_name": "com.example.tibicle_offline_demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJabJpTwY-AdBbfqCY_b7z58kqy-hw9gY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
