@@ -6,7 +6,8 @@ import '../cubit/task_cubit.dart';
 
 class AddEditTaskPage extends StatefulWidget {
   final TaskEntity? task;
-  const AddEditTaskPage({super.key, this.task});
+  final TaskCubit? cubit;
+  const AddEditTaskPage({super.key, this.task, this.cubit });
 
   @override
   State<AddEditTaskPage> createState() => _AddEditTaskPageState();
@@ -70,6 +71,8 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
   }
 
   void _save() {
+    final cubit = context.read<TaskCubit>(); // get cubit from context
+
     final title = _title.text.trim();
     final desc = _desc.text.trim();
     if (title.isEmpty || _due == null) return;
@@ -85,7 +88,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
         isSynced: false,
         lastModifiedAt: now,
       );
-      context.read<TaskCubit>().addTask(task);
+      cubit.createTask(task);
     } else {
       final task = widget.task!.copyWith(
         title: title,
@@ -93,7 +96,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
         dueDate: _due!,
         lastModifiedAt: now,
       );
-      context.read<TaskCubit>().updateTask(task);
+      widget.cubit!.modifyTask(task);
     }
     Navigator.pop(context);
   }

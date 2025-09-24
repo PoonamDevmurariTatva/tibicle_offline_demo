@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tibicle_offline_demo/features/tasks/data/models/task_model.dart';
+import 'package:tibicle_offline_demo/features/tasks/presentation/screens/add_edit_task_page.dart';
 
 import '../cubit/task_cubit.dart';
 import '../cubit/task_state.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final taskCubit = context.read<TaskCubit>();
@@ -44,17 +50,33 @@ class HomePage extends StatelessWidget {
                       Checkbox(
                         value: task.isCompleted,
                         onChanged: (_) {
+
                           final updatedTask = task.copyWith(
                             isCompleted: !task.isCompleted,
                             lastModifiedAt: DateTime.now(),
                           );
-                          taskCubit.updateTask(updatedTask);
+                          taskCubit.modifyTask(updatedTask);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          // Navigate to Edit Page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: taskCubit,
+                                child: AddEditTaskPage(task: task, cubit: taskCubit),
+                              ),
+                            ),
+                          );
                         },
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          taskCubit.deleteTask(task.id);
+                          taskCubit.removeTask(task.id, task.hashCode);
                         },
                       ),
                     ],
@@ -69,7 +91,15 @@ class HomePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddTaskDialog(context, taskCubit),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+              value: context.read<TaskCubit>(), // use same cubit instance
+              child: const AddEditTaskPage(),   // no task → create new
+            ),
+          ),
+        ),
         child: const Icon(Icons.add),
       ),
     );

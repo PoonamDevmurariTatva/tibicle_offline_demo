@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:tibicle_offline_demo/features/tasks/domain/usecases/sync_task_usecase.dart';
+import 'package:tibicle_offline_demo/services/notification_services.dart';
 import 'features/tasks/data/repositories/task_repositories_impl.dart';
 import 'features/tasks/data/task_local_datasources.dart';
 import 'features/tasks/data/task_remote_datasources.dart';
@@ -16,6 +17,8 @@ import 'features/tasks/presentation/screens/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init(); // must be called before runApp
+
 
   // Initialize Hive
   await Hive.initFlutter();
